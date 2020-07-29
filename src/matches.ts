@@ -89,7 +89,7 @@ export function matches (expression: Expression, record: any, extractor: Extract
     return expression.$or.some(exp => matches(exp, record, extractor))
   } else if (expression.$not) {
     return !matches(expression.$not as Expression, record, extractor)
-  } else if (typeof record === 'object') {
+  } else if (!Array.isArray(record) && typeof record === 'object') {
     const expr = expression as RootExpression
     // Implicit AND operation if multiple root level keys provided
     for (const key in expression) {

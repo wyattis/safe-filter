@@ -1,6 +1,6 @@
 import { Expression } from "../src/Expression"
 
-export const compoundData = {
+export const record = {
   one: 1,
   two: 2,
   threeArr: [0, 1, 2],
@@ -10,46 +10,46 @@ export const compoundData = {
   }
 }
 
-export const compoundExpressions: [Expression, boolean][] = [
-  [{
+export const compoundExpressions: [any, Expression, boolean][] = [
+  [record, {
     one: 1,
     two: {
       $neq: 2
     }
   }, false],
-  [{
+  [record, {
     $and: [{
       one: 1,
       two: 2
     }]
   }, true],
-  [{
+  [record, {
     $or: [{
       one: 2
     }, {
       two: 2
     }]
   }, true],
-  [{
+  [record, {
     $or: [{
       two: 2
     }, {
       one: 2
     }]
   }, true],
-  [{
+  [record, {
     $not: {
       $and: [{
         'threeArr.3': 4
       }]
     }
   }, true],
-  [{
+  [record, {
     $not: {
       two: 2
     }
   }, false],
-  [{
+  [record, {
     $and: [{
       $or: [{
         one: 2
@@ -60,7 +60,7 @@ export const compoundExpressions: [Expression, boolean][] = [
       two: { $not: 1 }
     }]
   }, true],
-  [{ threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
-  [{ threeArr: { $elemMatch: { $gte: 1, $eq: 0 } } }, false],
-  [{ threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true]
+  [record, { threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
+  [record, { threeArr: { $elemMatch: { $gte: 1, $eq: 0 } } }, false],
+  [record, { threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true]
 ]
