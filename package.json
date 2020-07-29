@@ -1,0 +1,60 @@
+{
+  "name": "safe-filter",
+  "version": "1.0.0",
+  "description": "A small, simple and safe TypeScript library for evaluating a subset of the well-known, MongoDB query language",
+  "main": "dist/index.js",
+  "keywords": [
+    "mongodb",
+    "filter",
+    "find",
+    "safe",
+    "expression"
+  ],
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "preversion": "npm test",
+    "lint": "tslint --fix --project .",
+    "test": "nyc mocha -r ts-node/register tests/**/*.spec.ts"
+  },
+  "author": "wyattis",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^3.9.7"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "src/**/*.d.ts"
+    ],
+    "reporter": [
+      "text"
+    ]
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wyattis/safe-filter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wyattis/safe-filter/issues"
+  },
+  "homepage": "https://github.com/wyattis/safe-filter#readme"
+}
