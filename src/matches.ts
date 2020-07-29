@@ -31,19 +31,19 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
   }
   if (expr.$gt !== undefined && !greaterThan(value, expr.$gt)) {
     return false
-  } 
+  }
   if (expr.$lt !== undefined && !lessThan(value, expr.$lt)) {
     return false
   }
   if (expr.$lte !== undefined && !lessThanOrEqual(value, expr.$lte)) {
     return false
-  } 
+  }
   if (expr.$gte !== undefined && !greaterThanOrEqual(value, expr.$gte)) {
     return false
   }
   if (expr.$in && !expr.$in.includes(value)) {
     return false
-  } 
+  }
   if (expr.$nin && expr.$nin.includes(value)) {
     return false
   }
