@@ -1,4 +1,4 @@
-import { Expression, ComplexExpression, Primative, RootExpression, LogicExpression } from './Expression'
+import { Expression, ComplexExpression, Primative, RootExpression } from './Expression'
 import { getAttribute } from './lib/getAttribute'
 import { isEqual, exists, greaterThan } from './operators'
 import { lessThan } from './operators/lessThan'
@@ -9,7 +9,30 @@ export type Extractor = (record: object, key: string) => any
 
 export function testExpression (expr: ComplexExpression | Primative, value: any): boolean {
   if (typeof expr !== 'object' || expr instanceof Date) {
-    return value === expr
+    if (Array.isArray(value)) {
+      return value.some(v => isEqual(v, expr))
+    } else {
+      return isEqual(expr, value)
+    }
+  }
+  if (expr && expr.$elemMatch) {
+    if (!Array.isArray(value)) {
+      return false
+    }
+    if (!value.some(v => matches(expr.$elemMatch!, v))) {
+      return false
+    }
+  } else if (Array.isArray(value)) {
+    // I don't understand why they designed the language this way, but I guess we'll do it the same way.
+    // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
+    for (const key in expr) {
+      // @ts-ignore
+      const partialExpr = { [key]: expr[key] }
+      if (!value.some(v => matches(partialExpr, v))) {
+        return false
+      }
+    }
+    return true
   }
   if ('$eq' in expr && !isEqual(value, expr.$eq)) {
     return false
@@ -50,19 +73,13 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
   if (expr.$regex && !(new RegExp(expr.$regex)).test(value)) {
     return false
   }
-  if (expr.$elemMatch) {
-    if (Array.isArray(value)) {
-      if (!value.some(v => matches(expr.$elemMatch!, v))) {
-        return false
-      }
-    } else {
-      return false
-    }
-  }
   return true
 }
 
-export function matches (expression: Expression, record: object, extractor: Extractor = getAttribute): boolean {
+export function matches (expression: Expression, record: any, extractor: Extractor = getAttribute): boolean {
+  if (typeof expression !== 'object' || expression instanceof Date) {
+    return isEqual(expression, record)
+  }
   if (expression.$and && expression.$or) {
     throw new Error('Indeterminate behavior. "$and" and "$or" operators cannot be present at the same level.')
   }
@@ -72,7 +89,7 @@ export function matches (expression: Expression, record: object, extractor: Extr
     return expression.$or.some(exp => matches(exp, record, extractor))
   } else if (expression.$not) {
     return !matches(expression.$not as Expression, record, extractor)
-  } else {
+  } else if (typeof record === 'object') {
     const expr = expression as RootExpression
     // Implicit AND operation if multiple root level keys provided
     for (const key in expression) {
@@ -82,5 +99,7 @@ export function matches (expression: Expression, record: object, extractor: Extr
       }
     }
     return true
+  } else {
+    return testExpression(expression, record)
   }
 }

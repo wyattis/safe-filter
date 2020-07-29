@@ -18,7 +18,7 @@ export type ComplexExpression = {
 }
 
 export type RootExpression = {
-  [key: string]: ComplexExpression | Primative
+  [key: string]: ComplexExpression | RootExpression | Primative
 }
 
 export type LogicExpression = {
@@ -27,4 +27,4 @@ export type LogicExpression = {
   $not?: Expression
 }
 
-export type Expression = LogicExpression | RootExpression
+export type Expression = LogicExpression | RootExpression | Primative

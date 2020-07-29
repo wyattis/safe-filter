@@ -59,5 +59,8 @@ export const compoundExpressions: [Expression, boolean][] = [
     }, {
       two: { $not: 1 }
     }]
-  }, true]
+  }, true],
+  [{ threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
+  [{ threeArr: { $elemMatch: { $gte: 1, $eq: 0 } } }, false],
+  [{ threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true]
 ]

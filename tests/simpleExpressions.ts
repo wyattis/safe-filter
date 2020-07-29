@@ -4,12 +4,15 @@ export const simpleData = {
   a: 1,
   b: 2,
   c: [{
-    v: 1
+    v: 1,
+    w: 2
   }, {
-    v: 2
+    v: 2,
+    w: 2
   }],
   d: 'yellow',
-  e: 'red'
+  e: 'red',
+  f: [1, 2, 3]
 }
 
 export const simpleExpressions: [Expression, boolean][] = [
@@ -59,5 +62,9 @@ export const simpleExpressions: [Expression, boolean][] = [
   [{}, true],
   [{ c: { $elemMatch: { v: 1 } } }, true],
   [{ c: { $elemMatch: { v: 0 } } }, false],
-  [{ k: { $elemMatch: { v: 1 } } }, false] // k is not an array
+  [{ k: { $elemMatch: { v: 1 } } }, false], // k is not an array
+  [{ f: { $elemMatch: 1 } }, true],
+  [{ f: 1 }, true],                         // The array f contains 1
+  [{ f: { $eq: 1 } }, true],                // ""
+  [{ f: { $eq: 4 } }, false],
 ]

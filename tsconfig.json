@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES5",
     "outDir": "./dist",
-    "lib": ["ES2015", "ES2016"],
+    "lib": ["ES2015", "ES2016", "DOM"],
     "allowJs": false,
     "strict": true,
     "noImplicitAny": true,
