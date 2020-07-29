@@ -33,8 +33,8 @@ export const simpleExpressions: [any, Expression, boolean][] = [
   [record, {
     $or: [{ d: { $eq: 'blue' } }, { e: 'red' }]
   }, true],
-  [record, { d: { $neq: 'yellow' } }, false],
-  [record, { e: { $neq: 'yellow' } }, true],
+  [record, { d: { $ne: 'yellow' } }, false],
+  [record, { e: { $ne: 'yellow' } }, true],
   [record, { a: { $gt: 2 } }, false],
   [record, { b: { $gt: 1 } }, true],
   [record, { a: { $lt: 0 } }, false],
@@ -55,8 +55,8 @@ export const simpleExpressions: [any, Expression, boolean][] = [
   [record, { notAProp: { $exists: false } }, true],
   [record, { b: { $not: { $eq: 1 } } }, true],
   [record, { b: { $not: { $eq: 2 } } }, false],
-  [record, { b: { $not: 2 } }, false],
-  [record, { b: { $not: 1 } }, true],
+  [record, { b: { $ne: 1 } }, true],
+  [record, { b: { $ne: 2 } }, false],
   [record, { d: { $regex: /yel.*/ } }, true],
   [record, { e: { $regex: /yel.*/ } }, false],
   [record, {}, true],
@@ -67,9 +67,13 @@ export const simpleExpressions: [any, Expression, boolean][] = [
   [record, { f: 1 }, true],                         // The array f contains 1
   [record, { f: { $eq: 1 } }, true],                // ""
   [record, { f: { $eq: 4 } }, false],
+  ['yellow', { $eq: 'yellow' }, true],
+  ['yellow', { $ne: 'yellow' }, false],
   [['yellow'], { $eq: 'yellow' }, true],
   [['yellow'], { $not: { $eq: 'yellow' } }, false],
   [['red', 'blue'], 'yellow', false],
-  [['red', 'yellow'], { $neq: 'yellow' }, true],
-  [['yellow', 'yellow'], { $neq: 'yellow' }, false]
+  [['red', 'yellow'], { $ne: 'yellow' }, true],
+  [['yellow', 'yellow'], { $ne: 'yellow' }, false],
+  [['red'], { $not: { $eq: 'red' } }, false],
+  [['red'], { $not: { $eq: 'yellow' } }, true],
 ]

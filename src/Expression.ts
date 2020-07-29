@@ -4,7 +4,7 @@ export type Primative = string | number | boolean | Date
 export type ComplexExpression = {
   $not?: ComplexExpression | Primative
   $eq?: Primative
-  $neq?: Primative
+  $ne?: Primative
   $gt?: Comparable
   $lt?: Comparable
   $gte?: Comparable

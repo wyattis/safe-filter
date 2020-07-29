@@ -14,7 +14,7 @@ export const compoundExpressions: [any, Expression, boolean][] = [
   [record, {
     one: 1,
     two: {
-      $neq: 2
+      $ne: 2
     }
   }, false],
   [record, {
@@ -57,7 +57,7 @@ export const compoundExpressions: [any, Expression, boolean][] = [
         one: 1
       }]
     }, {
-      two: { $not: 1 }
+      two: { $ne: 1 }
     }]
   }, true],
   [record, { threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria

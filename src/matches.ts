@@ -28,7 +28,8 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
     for (const key in expr) {
       // @ts-ignore
       const partialExpr = { [key]: expr[key] }
-      if (!value.some(v => matches(partialExpr, v))) {
+      const isTrue = value.some(v => matches(partialExpr, v))
+      if (!isTrue) {
         return false
       }
     }
@@ -37,18 +38,17 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
   if ('$eq' in expr && !isEqual(value, expr.$eq)) {
     return false
   }
-  if ('$neq' in expr && isEqual(value, expr.$neq)) {
+  if ('$ne' in expr && isEqual(value, expr.$ne)) {
     return false
   }
   if (typeof expr.$exists === 'boolean' && !exists(value, expr.$exists)) {
     return false
   }
   if ('$not' in expr) {
-    if (typeof expr.$not === 'object' && expr.$not !== null) {
-      if (testExpression(expr.$not, value)) {
-        return false
-      }
-    } else if (isEqual(expr.$not, value)) {
+    if (typeof expr.$not !== 'object' || expr.$not === null) {
+      throw new Error('$not needs a regex or a document')
+    }
+    if (testExpression(expr.$not, value)) {
       return false
     }
   }
@@ -88,6 +88,9 @@ export function matches (expression: Expression, record: any, extractor: Extract
   } else if (Array.isArray(expression.$or)) {
     return expression.$or.some(exp => matches(exp, record, extractor))
   } else if (expression.$not) {
+    if (typeof expression.$not !== 'object') {
+      throw new Error('$not needs a regex or a document')
+    }
     return !matches(expression.$not as Expression, record, extractor)
   } else if (!Array.isArray(record) && typeof record === 'object') {
     const expr = expression as RootExpression
