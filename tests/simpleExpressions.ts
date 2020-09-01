@@ -76,4 +76,10 @@ export const simpleExpressions: [any, Expression, boolean][] = [
   [['yellow', 'yellow'], { $ne: 'yellow' }, false],
   [['red'], { $not: { $eq: 'red' } }, false],
   [['red'], { $not: { $eq: 'yellow' } }, true],
+  [{ a: 1, b: ['noSymptoms'] }, { a: 1, b: { $not: { $eq: 'noSymptoms' } } }, false],
+  [{ a: 1, b: ['noSymptoms'] }, { a: 1, b: { $ne: 'noSymptoms' } }, false],
+  [{ a: 1 }, { b: { $ne: 'noSymptoms' } }, true],   // The array doesn't exist with $ne
+  [{ a: 1 }, { b: { $eq: 'noSymptoms' } }, false],  // The array doesn't exist with $eq
+  [{ a: 1, b: ['noSymptoms'] }, { a: 1, b: { $eq: 'noSymptoms' } }, true],
+  [{"hadSymptomsOrMedicalCare": 1, "symptoms": ["noSymptoms"]}, {"hadSymptomsOrMedicalCare": 1, "symptoms": {"$not": {"$eq": "noSymptoms"}}}, false]
 ]

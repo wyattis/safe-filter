@@ -60,6 +60,17 @@ export const compoundExpressions: [any, Expression, boolean][] = [
       two: { $ne: 1 }
     }]
   }, true],
+  [record, {
+    $and: [{
+      $or: [{
+        one: 2
+      }, {
+        one: 1
+      }]
+    }, {
+      two: { $eq: 1 }
+    }]
+  }, false],
   [record, { threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
   [record, { threeArr: { $elemMatch: { $gte: 1, $eq: 0 } } }, false],
   [record, { threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true]
