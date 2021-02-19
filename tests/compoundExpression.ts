@@ -80,7 +80,7 @@ export const compoundExpressions: [any, Expression, boolean][] = [
     $or: [{
       firstDoseAt: {$exists: 1},
       vaccinated: {$eq: 1},
-      vaccineType: {$in: ["pfizer", "moderna"]}
+      vaccineType: {$in: ['pfizer', 'moderna']}
     }, {
       'user.data.vaccine.receivedFirstDoseAt': {$exists: 1},
       'user.data.vaccine.receivedSecondDoseAt': {$exists: 0}
