@@ -27,6 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.2.12",
+    "@types/lodash": "^4.14.168",
     "@types/mocha": "^8.0.0",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
@@ -48,7 +49,9 @@
       "text"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wyattis/safe-filter.git"

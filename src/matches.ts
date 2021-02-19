@@ -1,9 +1,9 @@
 import { Expression, ComplexExpression, Primative, RootExpression } from './Expression'
-import { getAttribute } from './lib/getAttribute'
 import { isEqual, exists, greaterThan } from './operators'
 import { lessThan } from './operators/lessThan'
 import { lessThanOrEqual } from './operators/lessThanOrEqual'
 import { greaterThanOrEqual } from './operators/greaterThanOrEqual'
+import get from 'lodash/get'
 
 export type Extractor = (record: object, key: string) => any
 
@@ -41,7 +41,7 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
   if ('$ne' in expr && isEqual(value, expr.$ne)) {
     return false
   }
-  if (typeof expr.$exists === 'boolean' && !exists(value, expr.$exists)) {
+  if ((typeof expr.$exists === 'boolean' || typeof expr.$exists === 'number') && !exists(value, expr.$exists)) {
     return false
   }
   if ('$not' in expr) {
@@ -76,7 +76,7 @@ export function testExpression (expr: ComplexExpression | Primative, value: any)
   return true
 }
 
-export function matches (expression: Expression, record: any, extractor: Extractor = getAttribute): boolean {
+export function matches (expression: Expression, record: any, extractor: Extractor = get): boolean {
   if (typeof expression !== 'object' || expression instanceof Date) {
     return isEqual(expression, record)
   }

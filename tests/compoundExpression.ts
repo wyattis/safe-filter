@@ -73,5 +73,17 @@ export const compoundExpressions: [any, Expression, boolean][] = [
   }, false],
   [record, { threeArr: { $gte: 1 , $eq: 0 } }, true],   // https://docs.mongodb.com/manual/tutorial/query-array-of-documents/#combination-of-elements-satisfies-the-criteria
   [record, { threeArr: { $elemMatch: { $gte: 1, $eq: 0 } } }, false],
-  [record, { threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true]
+  [record, { threeArr: { $elemMatch: { $gt: 1, $lte: 2 } } }, true],
+  [{
+    user: { id: 1 }
+  }, {
+    $or: [{
+      firstDoseAt: {$exists: 1},
+      vaccinated: {$eq: 1},
+      vaccineType: {$in: ["pfizer", "moderna"]}
+    }, {
+      'user.data.vaccine.receivedFirstDoseAt': {$exists: 1},
+      'user.data.vaccine.receivedSecondDoseAt': {$exists: 0}
+    }]
+  }, false]
 ]
